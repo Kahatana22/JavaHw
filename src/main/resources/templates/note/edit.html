@@ -1,62 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Note</title>
+    <title>Редагування нотатки</title>
 </head>
 <body>
-<h1 class="mt-4 text-center">Edit Note</h1>
-
-<div>
-    <form id="editNoteForm">
-        <input type="hidden" id="noteId" name="noteId" th:value="${note.id}">
-        <label for="noteTitle">Note Title:</label>
-        <input type="text" id="noteTitle" name="title" th:value="${note.title}" required/>
-        <label for="noteContent">Note Content:</label>
-        <textarea id="noteContent" name="content" cols="30" rows="10" required th:text="${note.content}"></textarea>
-        <button type="submit">Save</button>
-        <button type="button" id="goBackButton">Back</button>
-    </form>
-</div>
-
-<script>
-    document.getElementById('editNoteForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const noteId = document.getElementById('noteId').value;
-        const noteTitle = document.getElementById('noteTitle').value;
-        const noteContent = document.getElementById('noteContent').value;
-
-        const data = {
-            id: noteId,
-            title: noteTitle,
-            content: noteContent
-        };
-
-        fetch('/note/edit', {
-           method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(function (response) {
-                if (response.ok) {
-                    alert('Note successfully changed!');
-                    window.location.href = '/note/list';
-                } else {
-                    console.error('Error: ', response);
-                }
-            })
-            .catch(function (error) {
-                console.error('Error: ', error);
-            });
-    });
-
-    document.getElementById('goBackButton').addEventListener('click', function () {
-        window.location.href = '/note/list';
-    });
-</script>
+<h1>Редагування нотатки</h1>
+<form method="post" action="/note/edit">
+    <input type="hidden" name="id" th:value="${note.id}">
+    <label for="title">Заголовок:</label>
+    <input type="text" id="title" name="title" th:value="${note.title}">
+    <br>
+    <label for="content">Контент:</label>
+    <textarea id="content" name="content" th:text="${note.content}"></textarea>
+    <br>
+    <button type="submit">Зберегти</button>
+</form>
+<a href="/note/list">Повернутися до списку</a>
 </body>
 </html>
