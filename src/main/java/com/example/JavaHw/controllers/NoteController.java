@@ -3,11 +3,9 @@ package com.example.JavaHw.controllers;
 import com.example.JavaHw.entities.Note;
 import com.example.JavaHw.services.NoteService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
 
 @Controller
 @RequestMapping("/note")
@@ -19,30 +17,41 @@ public class NoteController {
     }
     @GetMapping(value = "/list")
     public ModelAndView getListOfNotes() {
-        ModelAndView model = new ModelAndView("notes/list");
+        ModelAndView model = new ModelAndView("note/list");
         model.addObject("notes", noteService.listAll());
         return model;
     }
 
-    @PostMapping("/delete")
+    @GetMapping(value = "/create")
+    public String createNote() {
+        return "note/note";
+    }
+
+    @PostMapping(path = "/create")
+    public String updateListOfNodes(@ModelAttribute("note") Note newNote) {
+        noteService.add(newNote);
+        return "redirect:/note/list";
+    }
+
+    @PostMapping(path = "/delete")
     public String deleteNote(@RequestParam("id") Long id) {
         noteService.deleteById(id);
         return "redirect:/note/list";
     }
 
-    @GetMapping("/edit")
-    public String editNoteForm(@RequestParam("id") Long id, Model model) {
-        Note note = noteService.getById(id);
-        model.addAttribute("note", note);
-        return "note/edit";
+    @GetMapping(value = "/edit")
+    public ModelAndView editNote(@RequestParam("id") Long id) {
+        ModelAndView edit = new ModelAndView("note/edit");
+        Note byId = noteService.getById(id);
+        edit.addObject("note", byId);
+        return edit;
     }
 
-    @PostMapping("/edit")
-    public String editNote(@ModelAttribute Note note) {
-        noteService.update(note);
+    @PostMapping(path = "/edit")
+    public String updateNote(@ModelAttribute("note") Note updateNote) {
+        noteService.update(updateNote);
         return "redirect:/note/list";
     }
-
 }
 
 
