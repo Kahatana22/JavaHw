@@ -1,56 +1,39 @@
 package com.example.JavaHw.services;
 
 import com.example.JavaHw.entities.Note;
+import com.example.JavaHw.repositories.NoteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class NoteService {
-    private Map<Long, Note> notes;
-
-    public NoteService() {
-        notes = new HashMap<>();
-    }
+    private final NoteRepository noteRepository;
 
     public List<Note> listAll() {
-        return new ArrayList<>(notes.values());
+        List<Note> notes = new ArrayList<>();
+        noteRepository.findAll().forEach(note -> notes.add(note));
+        return notes;
     }
 
     public Note add(Note note){
-        Long id = generateId();
-        note.setId(id);
-        notes.put(note.getId(), note);
-        return note;
+        return noteRepository.save(note);
     }
 
     public void deleteById(Long id) {
-        if (!notes.containsKey(id)) {
-            throw new RuntimeException("Note with id " + id + " not found.");
-        }
-        notes.remove(id);
+        noteRepository.deleteById(id);
     }
 
     public void update(Note note) {
-        Long id = note.getId();
-        if (!notes.containsKey(id)) {
-            throw new RuntimeException("Note with id " + id + " not found.");
-        }
-        notes.put(id, note);
+        Note currentNote = noteRepository.findById(note.getId()).get();
+        currentNote.setTitle(note.getTitle());
+        currentNote.setContent(note.getContent());
+        noteRepository.save(currentNote);
     }
 
-    public Note getById(Long id) {
-        if (!notes.containsKey(id)) {
-            throw new RuntimeException("Note with id " + id + " not found.");
-        }
-        return notes.get(id);
-    }
-
-    private Long generateId() {
-        Long id = new Random().nextLong();
-        while (notes.containsKey(id) || id <= 0) {
-            id = new Random().nextLong();
-        }
-        return id;
+    public Optional<Note> getById(Long id) {
+        return noteRepository.findById(id);
     }
 }
