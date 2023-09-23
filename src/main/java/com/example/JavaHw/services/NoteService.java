@@ -19,7 +19,10 @@ public class NoteService {
     }
 
     public Note add(Note note){
-        return noteRepository.save(note);
+        if (!Objects.isNull(note)) {
+            return noteRepository.save(note);
+        }
+        return null;
     }
 
     public void deleteById(Long id) {
