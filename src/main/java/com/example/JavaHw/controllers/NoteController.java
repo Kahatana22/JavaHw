@@ -42,8 +42,8 @@ public class NoteController {
     @GetMapping(value = "/edit")
     public ModelAndView editNote(@RequestParam("id") Long id) {
         ModelAndView edit = new ModelAndView("note/edit");
-        Note byId = noteService.getById(id);
-        edit.addObject("note", byId);
+        Note note = noteService.getById(id).get();
+        edit.addObject("note", note);
         return edit;
     }
 
