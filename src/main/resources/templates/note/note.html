@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Створити нову нотатку</title>
 </head>
 <body>
 <h1>Створити нову нотатку</h1>
-<form method="post" action="/note/create">
+<!--<form method="post" action="/note/create">-->
+<form th:action=‘@{/note/create}’ method=“post”>
     <label for="title">Заголовок:</label>
     <input type="text" id="title" name="title">
     <br>
