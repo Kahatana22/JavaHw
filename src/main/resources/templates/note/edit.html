@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Редагування нотатки</title>
 </head>
 <body>
 <h1>Редагування нотатки</h1>
-<form method="post" action="/note/edit">
+<!--<form method="post" action="/note/edit">-->
+<form th:action=‘@{/note/edit}’ method=“post”>
     <input type="hidden" name="id" th:value="${note.id}">
     <label for="title">Заголовок:</label>
     <input type="text" id="title" name="title" th:value="${note.title}">
