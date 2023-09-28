@@ -2,20 +2,24 @@ package com.example.JavaHw.services;
 
 import com.example.JavaHw.entities.Note;
 import com.example.JavaHw.repositories.NoteRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class NoteService {
     private final NoteRepository noteRepository;
 
+    @Autowired
+    public NoteService(NoteRepository noteRepository) {
+        this.noteRepository = noteRepository;
+    }
+
     public List<Note> listAll() {
-        List<Note> notes = new ArrayList<>();
-        noteRepository.findAll().forEach(note -> notes.add(note));
-        return notes;
+        return (List<Note>) noteRepository.findAll();
     }
 
     public Note add(Note note){
