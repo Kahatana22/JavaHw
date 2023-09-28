@@ -12,7 +12,8 @@
         <li>
             <strong th:text="${note.title}"></strong>
             <p th:text="${note.content}"></p>
-            <form method="post" action="/note/delete">
+<!--            <form method="post" action="/note/delete">-->
+            <form th:action=‘@{/note/delete}’ method=“post”>
                 <input type="hidden" name="id" th:value="${note.id}">
                 <button type="submit">Видалити</button>
             </form>
